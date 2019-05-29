@@ -129,6 +129,7 @@ def main():
     for item in listaNos:
         print(item)
 
+    #Inicio do loop
     for n in range(0,len(listaNos)):
         if(len(listaNos) > 1):
             newNo = juntarNo(listaNos[0],listaNos[1])
