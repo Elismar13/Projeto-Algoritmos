@@ -3,7 +3,7 @@ import os
 #==================================================================================================
 
 #======================================= ARQUIVOS =================================================
-import Interface
+
 #==================================================================================================
 
 
@@ -115,7 +115,7 @@ def OrdenarDicionario_SemFuncao(listaOrdenada):
 #====================================== PROGRAMA PRINCIPAL ===============================================
 
 def main():
-    dicionario = Criar_Dicionario("aaabbccccccccc")
+    dicionario = Criar_Dicionario("AAAAAABBBBBCCCCDDDEEF")
     listaQuase = Criar_Lista(dicionario)
     listaOrdenada = OrdenarDicionario_SemFuncao(listaQuase)
 
@@ -129,14 +129,16 @@ def main():
     for item in listaNos:
         print(item)
 
-    newNo = juntarNo(listaNos[0],listaNos[1])
-    listaNos.append(newNo)
-    del listaNos[0]
-    del listaNos[0]
+    for n in range(0,len(listaNos)):
+        if(len(listaNos) > 1):
+            newNo = juntarNo(listaNos[0],listaNos[1])
+            del listaNos[0]
+            del listaNos[0]
+            listaNos.append(newNo)
 
-    print("Depois")
-    for item in listaNos:
-        print(item)
+            print("Depois")
+            for item in listaNos:
+                print(item)
 
 
 
