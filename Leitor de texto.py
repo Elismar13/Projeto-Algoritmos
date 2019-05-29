@@ -9,12 +9,13 @@
 
 def juntarNo(dic1,dic2):
 
-    quantidade1 = list(dic1.values())[0]
-    quantidade2 = list(dic2.values())[0]
-    caracter1 = list(dic1.keys())[0]
-    caracter2 = list(dic2.keys())[0]
+    quantidade1 = dic1["quantidade"]
+    quantidade2 = dic2["quantidade"]
+    caracter1 = dic1["caracter"]
+    caracter2 = dic2["caracter"]
 
 
+    print(caracter1 + caracter2)
     no = {
         "quantidade":quantidade1 + quantidade2,
         "caracter": caracter1 + caracter2,
@@ -108,11 +109,20 @@ def main():
 
 
     listaNos = []
-    juntarNo()
-    del
+
     for item in listaOrdenada:
         listaNos.append(inicializarNo(item))
 
+    print("ANTES")
+    for item in listaNos:
+        print(item)
+
+    newNo = juntarNo(listaNos[0],listaNos[1])
+    listaNos.append(newNo)
+    del listaNos[0]
+    del listaNos[0]
+
+    print("Depois")
     for item in listaNos:
         print(item)
 
