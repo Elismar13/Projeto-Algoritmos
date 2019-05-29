@@ -7,7 +7,7 @@
 
 #========================================Estrutura==================================================
 
-def juntarNo(dic1,dic2):
+def juntarNo(dic1,dic2):                                #Função para juntar nós do dicionário
 
     quantidade1 = list(dic1.values())[0]
     quantidade2 = list(dic2.values())[0]
@@ -21,7 +21,6 @@ def juntarNo(dic1,dic2):
         "direita": dic1,
         "esquerda": dic2
     }
-
     return no
 
 def ordenarNo(listaNos):
