@@ -1,13 +1,15 @@
 #====================================== BIBLIOTECAS ===============================================
-# import os
-#
-# #======================================= ARQUIVOS =================================================
-# import Interface
+import os
+#==================================================================================================
+
+#======================================= ARQUIVOS =================================================
+import Interface
+#==================================================================================================
 
 
 #========================================Estrutura==================================================
-
-def juntarNo(dic1,dic2):                                #Função para juntar nós do dicionário
+#Função para juntar nós do dicionário
+def juntarNo(dic1,dic2):
 
     quantidade1 = dic1["quantidade"]
     quantidade2 = dic2["quantidade"]
@@ -16,14 +18,16 @@ def juntarNo(dic1,dic2):                                #Função para juntar n�
 
 
     print(caracter1 + caracter2)
-    no = {
+    novoNO = {
         "quantidade":quantidade1 + quantidade2,
         "caracter": caracter1 + caracter2,
         "direita": dic1,
         "esquerda": dic2
     }
-    return no
+    return novoNO
 
+
+#Ordena a lista em um formato crescente
 def ordenarNo(listaNos):
     for i in range(len(listaNos)):
         aux = listaNos[i]
@@ -40,6 +44,8 @@ def ordenarNo(listaNos):
     print(listaNos)
     return listaNos
 
+
+#Crio o nó a partir dos dados do dicionário
 def inicializarNo(item):
 
     quantidade = list(item.values())[0]
@@ -52,14 +58,18 @@ def inicializarNo(item):
     }
 
     return no
+#==================================================================================================
 
+
+#Converter de String para Binário
 def str_to_bin(string):
     binario = ''
     for i in string:
         binario += bin(ord(i))[2::] + ' '
     return binario
 
-def Criar_Dicionario(palavra):                  #Função para criar o dicionario e contar as letras
+#Função para criar o dicionario e contar as letras
+def Criar_Dicionario(palavra):
     letras = {}
 
 
@@ -71,7 +81,8 @@ def Criar_Dicionario(palavra):                  #Função para criar o dicionari
 
     return letras
 
-def Ordenar_Lista(dicionario):
+#Crio a lista com os dicionários
+def Criar_Lista(dicionario):
 
     listaOrdenada = []
     caracters = list(dicionario.keys())
@@ -101,9 +112,11 @@ def OrdenarDicionario_SemFuncao(listaOrdenada):
 
 
 
+#====================================== PROGRAMA PRINCIPAL ===============================================
+
 def main():
     dicionario = Criar_Dicionario("aaabbccccccccc")
-    listaQuase = Ordenar_Lista(dicionario)
+    listaQuase = Criar_Lista(dicionario)
     listaOrdenada = OrdenarDicionario_SemFuncao(listaQuase)
 
 
