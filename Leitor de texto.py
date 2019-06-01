@@ -7,7 +7,9 @@ import os
 #==================================================================================================
 
 
-#========================================Estrutura==================================================
+
+#=====================================Estrutura dos nós============================================
+
 #Função para juntar nós do dicionário
 def juntarNo(dic1,dic2):
 
@@ -17,7 +19,7 @@ def juntarNo(dic1,dic2):
     caracter2 = dic2["caracter"]
 
 
-    print(caracter1 + caracter2)
+    #print(caracter1 + caracter2)
     novoNO = {
         "quantidade":quantidade1 + quantidade2,
         "caracter": caracter1 + caracter2,
@@ -25,7 +27,6 @@ def juntarNo(dic1,dic2):
         "esquerda": dic2
     }
     return novoNO
-
 
 #Ordena a lista em um formato crescente
 def ordenarNo(listaNos):
@@ -44,7 +45,6 @@ def ordenarNo(listaNos):
     print(listaNos)
     return listaNos
 
-
 #Crio o nó a partir dos dados do dicionário
 def inicializarNo(item):
 
@@ -60,6 +60,9 @@ def inicializarNo(item):
     return no
 #==================================================================================================
 
+
+
+#===================================Criar e ordenar lista==========================================
 
 #Converter de String para Binário
 def str_to_bin(string):
@@ -109,13 +112,15 @@ def OrdenarDicionario_SemFuncao(listaOrdenada):
             listaOrdenada[j] = listaOrdenada[j - 1]
     print(listaOrdenada)
     return listaOrdenada
+#==================================================================================================
 
+def CondicionalArvore()
 
 
 #====================================== PROGRAMA PRINCIPAL ===============================================
 
 def main():
-    dicionario = Criar_Dicionario("AAAAAABBBBBCCCCDDDEEF")
+    dicionario = Criar_Dicionario("AAABBC")
     listaQuase = Criar_Lista(dicionario)
     listaOrdenada = OrdenarDicionario_SemFuncao(listaQuase)
 
