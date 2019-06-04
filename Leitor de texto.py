@@ -1,5 +1,6 @@
 #====================================== BIBLIOTECAS ===============================================
 import os
+import json
 #==================================================================================================
 
 #======================================= ARQUIVOS =================================================
@@ -21,7 +22,7 @@ def juntarNo(dic1,dic2):
 
     #print(caracter1 + caracter2)
     novoNO = {
-        "quantidade":quantidade1 + quantidade2,
+        "quantidade": quantidade1 + quantidade2,
         "caracter": caracter1 + caracter2,
         "direita": dic1,
         "esquerda": dic2
@@ -32,7 +33,7 @@ def juntarNo(dic1,dic2):
 def ordenarNo(listaNos):
     for i in range(len(listaNos)):
         aux = listaNos[i]
-        print(aux)
+        #print(aux)
         for j in range(i,-1,-1):
             if(j == 0):
                 listaNos[0] = aux
@@ -42,7 +43,7 @@ def ordenarNo(listaNos):
                 break
 
             listaNos[j] = listaNos[j - 1]
-    print(listaNos)
+    # print("Lista nos: ", listaNos)
     return listaNos
 
 #Crio o nó a partir dos dados do dicionário
@@ -56,7 +57,6 @@ def inicializarNo(item):
         "direita": None,
         "esquerda": None
     }
-
     return no
 #==================================================================================================
 
@@ -72,9 +72,8 @@ def str_to_bin(string):
     return binario
 
 #Função para criar o dicionario e contar as letras
-def Criar_Dicionario(palavra):
+def Contar_Caracteres(palavra):
     letras = {}
-
 
     for percorrer in palavra:                   #Criar o dicionario
         letras[percorrer] = 0
@@ -87,20 +86,20 @@ def Criar_Dicionario(palavra):
 #Crio a lista com os dicionários
 def Criar_Lista(dicionario):
 
-    listaOrdenada = []
+    lista = []
     caracters = list(dicionario.keys())
     qtd = list(dicionario.values())
     for i in range(len(dicionario)):
-        listaOrdenada.append({caracters[i]:qtd[i]})
+        lista.append({caracters[i]:qtd[i]})
 
-    print(listaOrdenada)
+    print("Dicionario criado: ", lista, "\n\n")
 
-    return listaOrdenada
+    return lista
+
 
 def OrdenarDicionario_SemFuncao(listaOrdenada):
     for i in range(len(listaOrdenada)):
         aux = listaOrdenada[i]
-        print(aux)
         for j in range(i,-1,-1):
             if(j == 0):
                 listaOrdenada[0] = aux
@@ -110,29 +109,71 @@ def OrdenarDicionario_SemFuncao(listaOrdenada):
                 break
 
             listaOrdenada[j] = listaOrdenada[j - 1]
-    print(listaOrdenada)
+    print("Dicionario ordenado:" ,listaOrdenada, "\n\n")
     return listaOrdenada
 #==================================================================================================
 
-def CondicionalArvore()
+
+#======================================= Gerenciar Árvore =========================================
+
+def CondicionalArvore(no_raiz, codigo = "",lista = []):
+
+    if(no_raiz["esquerda"] != None):
+        CondicionalArvore(no_raiz["esquerda"], codigo + "0",lista)
+
+    if(no_raiz["direita"] != None):
+        CondicionalArvore(no_raiz["direita"], codigo + "1",lista)
+
+    if(no_raiz["esquerda"] == None and no_raiz["direita"] == None):
+
+        dicionario = {no_raiz["caracter"] : codigo}
+        lista.append(dicionario)
+    return lista
+
+#==================================================================================================
+
+
+#====================================== Gerenciar Arquivo =========================================
+
+def LerArquivo(arquivo):
+    texto = ""
+    arquivo.seek(0)
+    for linha in arquivo:
+        texto += linha.decode("utf-8")
+    print(texto)
+    return texto
+
+
+def GerenciarCodigo(texto, ListaOrdenada):
+    aux = ''
+    nome = input("Digite o nome do novo arquivo: ")
+    print(texto)
+    ArquivoComprimido = open(nome+".ale", "w")
+    for i in range(len(texto)):
+        for elemento in ListaOrdenada:
+            #if texto[i] == elemento["caracter"]:
+            print(elemento)
+
+
+    return
 
 
 #====================================== PROGRAMA PRINCIPAL ===============================================
 
 def main():
-    dicionario = Criar_Dicionario("AAABBC")
-    listaQuase = Criar_Lista(dicionario)
-    listaOrdenada = OrdenarDicionario_SemFuncao(listaQuase)
-
+    arquivo = open("arq.txt", "rb")
+    dicionario = Contar_Caracteres(LerArquivo(arquivo))
+    lista = Criar_Lista(dicionario)
+    listaOrdenada = OrdenarDicionario_SemFuncao(lista)
+    conteudo_arquivo = LerArquivo(arquivo)
+    GerenciarCodigo(conteudo_arquivo, listaOrdenada)
 
     listaNos = []
 
     for item in listaOrdenada:
         listaNos.append(inicializarNo(item))
 
-    print("ANTES")
-    for item in listaNos:
-        print(item)
+
 
     #Inicio do loop
     for n in range(0,len(listaNos)):
@@ -142,10 +183,11 @@ def main():
             del listaNos[0]
             listaNos.append(newNo)
 
-            print("Depois")
-            for item in listaNos:
-                print(item)
+            listaNos = ordenarNo(listaNos)
 
+    arq2 = open("arq2.txt","w")
+    arq2.write(json.dumps(listaNos, indent=4, sort_keys=False))
+    print(CondicionalArvore(listaNos[0]))
 
 
 
