@@ -3,7 +3,7 @@ Este arquivopossui funcoes relacionadas a compressao de arquivos
 '''
 
 #===============================Imports=========================================
-import binarios
+from Ferramentas import binarios
 
 
 #=============================Fim Import========================================
@@ -39,5 +39,5 @@ def padronizar(arq,lista):
     for item in lista:
         caracter = list(item.keys())[0]
         arq.write(caracter)
-        arq.write(bytes(chr(binarios.converterBinarioDecimal(item[caracter])),encoding="utf-8"))
+        arq.write(bytes(chr(binarios.converterBinarioDecimal(item[caracter])), encoding="utf-8"))
 
