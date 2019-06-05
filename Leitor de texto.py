@@ -1,5 +1,7 @@
 #====================================== BIBLIOTECAS ===============================================
 import os
+import no
+import binarios
 import json
 #==================================================================================================
 
@@ -8,98 +10,44 @@ import json
 #==================================================================================================
 
 
-
-#=====================================Estrutura dos nós============================================
-
+#========================================Estrutura==================================================
 #Função para juntar nós do dicionário
-def juntarNo(dic1,dic2):
 
-    quantidade1 = dic1["quantidade"]
-    quantidade2 = dic2["quantidade"]
-    caracter1 = dic1["caracter"]
-    caracter2 = dic2["caracter"]
-
-
-    #print(caracter1 + caracter2)
-    novoNO = {
-        "quantidade": quantidade1 + quantidade2,
-        "caracter": caracter1 + caracter2,
-        "direita": dic1,
-        "esquerda": dic2
-    }
-    return novoNO
-
-#Ordena a lista em um formato crescente
-def ordenarNo(listaNos):
-    for i in range(len(listaNos)):
-        aux = listaNos[i]
-        #print(aux)
-        for j in range(i,-1,-1):
-            if(j == 0):
-                listaNos[0] = aux
-                break
-            if(aux["quantidade"] > listaNos[j - 1]["quantidade"]):
-                listaNos[j] = aux
-                break
-
-            listaNos[j] = listaNos[j - 1]
-    # print("Lista nos: ", listaNos)
-    return listaNos
-
-#Crio o nó a partir dos dados do dicionário
-def inicializarNo(item):
-
-    quantidade = list(item.values())[0]
-    caracter = list(item.keys())[0]
-    no = {
-        "quantidade":quantidade,
-        "caracter": caracter,
-        "direita": None,
-        "esquerda": None
-    }
-    return no
 #==================================================================================================
 
 
-
-#===================================Criar e ordenar lista==========================================
-
-#Converter de String para Binário
-def str_to_bin(string):
-    binario = ''
-    for i in string:
-        binario += bin(ord(i))[2::] + ' '
-    return binario
-
-#Função para criar o dicionario e contar as letras
 def Contar_Caracteres(palavra):
     letras = {}
 
-    for percorrer in palavra:                   #Criar o dicionario
-        letras[percorrer] = 0
+    for percorrer in palavra:                    # Criar o dicionario
+        # print(percorrer)
+        letras[percorrer] =  0
 
-    for percorrer_2 in palavra:                 #Adicionar elementos no dicionario
-        letras[percorrer_2] += 1
+    for percorrer_2 in palavra:                  # Adicionar elementos no dicionario
+        # print(percorrer_2, letras[percorrer_2])
+
+        letras[percorrer_2] +=  1
+
 
     return letras
 
 #Crio a lista com os dicionários
 def Criar_Lista(dicionario):
 
-    lista = []
+    listaOrdenada = []
     caracters = list(dicionario.keys())
     qtd = list(dicionario.values())
     for i in range(len(dicionario)):
-        lista.append({caracters[i]:qtd[i]})
+        listaOrdenada.append({caracters[i]:qtd[i]})
 
-    print("Dicionario criado: ", lista, "\n\n")
+    # print(listaOrdenada)
 
-    return lista
-
+    return listaOrdenada
 
 def OrdenarDicionario_SemFuncao(listaOrdenada):
     for i in range(len(listaOrdenada)):
         aux = listaOrdenada[i]
+        # print(aux)
         for j in range(i,-1,-1):
             if(j == 0):
                 listaOrdenada[0] = aux
@@ -109,45 +57,55 @@ def OrdenarDicionario_SemFuncao(listaOrdenada):
                 break
 
             listaOrdenada[j] = listaOrdenada[j - 1]
-    print("Dicionario ordenado:" ,listaOrdenada, "\n\n")
+    # print(listaOrdenada)
     return listaOrdenada
-#==================================================================================================
 
 
-#======================================= Gerenciar Árvore =========================================
+def gerarTabela(no,num = ""):
+    tabela = []
+    if(no["direita"] != None):
+        tabela += gerarTabela(no["direita"],num + "1")
 
-def CondicionalArvore(no_raiz, codigo = "",lista = []):
+    if(no["esquerda"] != None):
+        tabela += gerarTabela(no["esquerda"],num + "0")
 
-    if(no_raiz["esquerda"] != None):
-        CondicionalArvore(no_raiz["esquerda"], codigo + "0",lista)
+    if(no["esquerda"] == None and no["direita"] == None):
+        tabela.append({no["caracter"]: num})
 
-    if(no_raiz["direita"] != None):
-        CondicionalArvore(no_raiz["direita"], codigo + "1",lista)
+    # novaTabela = open("tabela.txt","wb")
+    # novaTabela.write(json.dumps(tabela))
+    # novaTabela .close()
+    return tabela
 
-    if(no_raiz["esquerda"] == None and no_raiz["direita"] == None):
 
-        dicionario = {no_raiz["caracter"] : codigo}
-        lista.append(dicionario)
-    return lista
 
-#==================================================================================================
+
+
+
+
 
 
 #====================================== Gerenciar Arquivo =========================================
 
 def LerArquivo(arquivo):
+    lista = []
     texto = ""
     arquivo.seek(0)
+    tamanho = os.path.getsize(arquivo.name)
+    contador = 1
     for linha in arquivo:
-        texto += linha.decode("utf-8")
-    print(texto)
-    return texto
+        if(contador == tamanho - 2):
+            break
+        aux = linha
+        for n in aux:
+            lista.append(bytes(chr(n),encoding="utf-8"))
+        contador += 1
+    return lista
 
 
 def GerenciarCodigo(texto, ListaOrdenada):
     aux = ''
     nome = input("Digite o nome do novo arquivo: ")
-    print(texto)
     ArquivoComprimido = open(nome+".ale", "w")
     for i in range(len(texto)):
         for elemento in ListaOrdenada:
@@ -157,17 +115,100 @@ def GerenciarCodigo(texto, ListaOrdenada):
 
     return
 
+#=============================================================================================
+
+def ajustaString(string,n):
+    novaString = ""
+    for n in range(n,len(string)):
+        novaString += string[n]
+
+    return novaString
+
+def lerArquivoPosicao(caminho,posicao):
+    binarioCompleto = ""
+
+    # novoArquivo = open("arquivoRestaurado.txt","w")
+    arq = open(caminho,"r")
+    tamanho = os.path.getsize(caminho)
+    for i in range(posicao,tamanho):
+        arq.seek(i)
+        caracter = arq.read(1)
+        cod = str(converterDecimalBinario2(ord(caracter)))
+        aux = len(cod) - 7
+        if aux >= 1:
+            cod = ajustaString(cod,aux)
+        binarioCompleto += cod
+
+    print(binarioCompleto)
+    arq.close()
+    return binarioCompleto
+
+def recuperarPadrao(caminho):
+    print("=======Recuper Padrao==========")
+    tabela = {}
+    arquivo = open(caminho,"rb")
+    cont = 0
+    texto = LerArquivo(arquivo)
+    n = ord(texto[0].decode("utf-8"))
+    cursor = 1
+    print(n)
+    while(cont < n):
+
+        arquivo.seek(cursor)
+        caracter = texto[cursor]
+        while(caracter in tabela):
+            cursor += 1
+            caracter = texto[cursor]
+
+
+        valor = texto[cursor + 1]
+        print(valor)
+        tabela[caracter] = converterDecimalBinario1(ord(valor.decode()))
+        cont += 1
+        cursor += 2
+
+    print(tabela)
+
+
+    binarioCompleto = lerArquivoPosicao(caminho, cursor)
+    return [tabela,binarioCompleto]
+
+
+def regenerar(tabela,codigoCompleto,noRaiz):
+    texto = []
+    no = noRaiz
+    for bit in codigoCompleto:
+        # print("======")
+        # print(no)
+        # print(texto)
+        if(bit == "1"):
+            no = no["direita"]
+            if(no["esquerda"] == None and no["direita"] == None):
+                texto += [no["caracter"]]
+                no = noRaiz
+
+        elif(bit == "0"):
+            no = no["esquerda"]
+            if(no["esquerda"] == None and no["direita"] == None):
+                texto += [no["caracter"]]
+                no = noRaiz
+
+    print("-->",texto)
+    return texto
+
 
 #====================================== PROGRAMA PRINCIPAL ===============================================
 
 def main():
-    arquivo = open("arq.txt", "rb")
-    dicionario = Contar_Caracteres(LerArquivo(arquivo))
-    lista = Criar_Lista(dicionario)
-    listaOrdenada = OrdenarDicionario_SemFuncao(lista)
-    conteudo_arquivo = LerArquivo(arquivo)
-    GerenciarCodigo(conteudo_arquivo, listaOrdenada)
+    print("============Concorreten do WInrar============")
+    nome = input((":Digite o nome do arquivo: "))
+    arquivo = open(nome+".txt", "rb")
 
+    texto = LerArquivo(arquivo)
+    dados = Contar_Caracteres(texto)
+    lista = Criar_Lista(dados)
+    listaOrdenada = OrdenarDicionario_SemFuncao(lista)
+    print(texto[0])
     listaNos = []
 
     for item in listaOrdenada:
@@ -182,15 +223,57 @@ def main():
             del listaNos[0]
             del listaNos[0]
             listaNos.append(newNo)
-
             listaNos = ordenarNo(listaNos)
 
-    arq2 = open("arq2.txt","w")
-    arq2.write(json.dumps(listaNos, indent=4, sort_keys=False))
-    print(CondicionalArvore(listaNos[0]))
+
+    arq = open("arq.txt","w")
+    #arq.write(var)
+    arq.close()
+    noRaiz = listaNos[0]
+    tabela = gerarTabela(noRaiz)
+    print("--",len(tabela))
+    bits = trocarCaracter(texto,tabela)
+    listaBytes = substituirBits(bits)
 
 
+    novoNome = arquivo.name.split(".")[0]
+    print(novoNome)
+    novoArquivo = open(novoNome + ".ale","wb")
+    padronizar(novoArquivo,tabela)
+
+    print("Bytes",listaBytes)
+    for byte in listaBytes:
+
+        caracter = bytes(converterByte(byte),encoding="utf-8")
+        novoArquivo.write(caracter)
+    novoArquivo.close()
 
 
+    op = 1
+    if(op == 1):
+        teste = recuperarPadrao(novoNome + ".ale")
+        tabelaRegenarada = teste[0]
+        binarioCompleto = teste[1]
+        print("BITS",bits)
+        if(binarioCompleto == bits):
+            print("SHOW DE BOLA")
+
+        else:
+            print("ALGO A SER SANADO")
+        # print("-->>",tabelaRegenarada)
+        # print("<<<>>>",LerArquivo(novoArquivo2))
+        # print()
+        # print()
+        arquivoRegenerado = open("ArquivoRegenerado.txt", "wb")
+        listaFinal  = regenerar(tabelaRegenarada,binarioCompleto,listaNos[0])
+        for item in listaFinal:
+            arquivoRegenerado.write(item)
+
+        arquivoRegenerado.close()
+
+
+    print("===========Obrigado por nos utilizar========")
+    print("===========Avalie em 5 estrelas========")
+    print("===========#NaoAoWINRAR========")
 if __name__ == '__main__':
     main()
