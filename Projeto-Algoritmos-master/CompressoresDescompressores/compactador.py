@@ -40,8 +40,7 @@ def compactar():
     texto = lerArquivo(arquivo)
     print(texto)
     dados = Contar_Caracteres(texto)
-    lista = Criar_Lista(dados)
-    listaOrdenada = OrdenarDicionario_SemFuncao(lista)
+    listaOrdenada = OrdenarDicionario_SemFuncao(dados)
     listaNos = gerarNos(listaOrdenada)
     noRaiz = gerarArvore(listaNos)
     tabela = gerarTabela(noRaiz,gerar=True)
@@ -64,6 +63,7 @@ def criarNovoArquivoComprimido(caminho,listsBytes,tabela,frequencia):
     padronizar(novoArquivo,tabela,extensao,frequencia)
 
     for byte in listsBytes:
+        print("B-",byte)
         caracter = bytes(converterByte(byte),encoding="utf-8")
         novoArquivo.write(caracter)
     novoArquivo.close()
@@ -81,8 +81,17 @@ def padronizar(arq,lista,extensao,frequencia):
     arq.write(bytes(extensao,encoding="utf-8"))
     arq.write(bytes(" ",encoding="utf-8"))
     arq.write(bytes(chr(qtd),encoding="utf-8"))
+    print(frequencia)
     for item in lista:
+        print("I",item)
         caracter = list(item.keys())[0]
         arq.write(bytes(chr(caracter),encoding="utf-8"))
         arq.write(bytes(chr(binarios.converterBinarioDecimal(item[caracter])), encoding="utf-8"))
-        arq.write(bytes(chr(frequencia[caracter]),encoding="utf-8"))
+        arq.write(bytes(chr(buscarFrequencia(caracter,frequencia)),encoding="utf-8"))
+
+
+def buscarFrequencia(caracter,frequencia):
+    for item in frequencia:
+        chave = list(item.keys())[0]
+        if(caracter == chave):
+            return item[chave]

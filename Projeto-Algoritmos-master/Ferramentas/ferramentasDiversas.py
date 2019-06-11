@@ -2,6 +2,9 @@
 Ferramentas uteis para o funcionamento do codigo
 '''
 
+import sys
+
+
 '''
 Conta a frequencia de cada caracter em um texto
 Parametros(Texto:String)
@@ -16,7 +19,34 @@ def Contar_Caracteres(texto):
     for percorrer_2 in texto:                  # Adicionar 1 para cada momento em que encontrar um caracter
         frequencia[percorrer_2] +=  1
 
+    listFrequencia = []
+    for item in frequencia:
+
+        listFrequencia.append({item:frequencia[item]})
+
+    frequencia = ordenarFrequencia(listFrequencia)
+    print("Frequencia\n:",frequencia)
     return frequencia
+
+'''
+# Ordenar a frequencia pelo valor do caracter
+# Parametros(frequencia:dict)
+# Return(frequenciaOrdenada:list)
+'''
+def ordenarFrequencia(lista):
+    print(lista)
+    for i in range(len(lista)):
+        aux = lista[i]
+        for j in range(i,-1,-1):
+            if(j == 0):
+                lista[0] = aux
+                break
+            if(list(aux.keys())[0] > list(lista[j -1].keys())[0]):
+                lista[j] = aux
+                break
+
+            lista[j] = lista[j - 1]
+    return lista
 
 
 '''

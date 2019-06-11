@@ -18,19 +18,27 @@ def recuperarDados(caminho):
     cont = 0
     cursor = 0
     texto = lerArquivo(arquivo)
+
     extensao = ""
     frequencia = {}
+
     for c in texto:
-        if(c == ord(" ")):
+        # print("--",c)
+        if(c == " "):
             break
 
         extensao += chr(c)
         cursor += 1
 
     cursor += 1
-    n = texto[cursor]
+
+    # print(texto)
+    n = ord(texto[cursor])
 
     cursor += 1
+
+    print("Quantidade de caracters:", n)
+
     while(cont < n):
 
         arquivo.seek(cursor)
@@ -39,12 +47,9 @@ def recuperarDados(caminho):
             cursor += 1
             caracter = texto[cursor]
 
-        valor = texto[cursor + 1]
-        codigoBin = converterDecimalBinario(valor)
-        print("!!!!!",texto[cursor + 2])
-        frequencia[caracter] = texto[cursor + 2]
-
-
+        codigoBin = str(int(converterDecimalBinario(ord(texto[cursor + 1]))))
+        frequencia[caracter] = ord(texto[cursor + 2])
+        #Verificacao de prefixo em codigos
         for codigo in list(tabela.values()):
             if(codigoBin == codigo):
                 codigoBin = "0" + codigoBin
@@ -54,19 +59,43 @@ def recuperarDados(caminho):
                 codigoBin = "0" + codigoBin
                 continue
 
-
-
-
         tabela[caracter] = codigoBin
-
-
         cont += 1
         cursor += 3
 
+    #Determinando numero de bits necessarios a produzir
+    qtd = 0
 
-    binarioCompleto = transformarTextoBin(caminho, cursor)
+
+
+    listFrequencia = []
+    for item in frequencia:
+
+        listFrequencia.append({item:frequencia[item]})
+
+    frequenciaAux = ordenarFrequencia(listFrequencia)
+
+    listaOrdenada = OrdenarDicionario_SemFuncao(frequenciaAux)
+    listaNos = gerarNos(listaOrdenada)
+    noRaiz = gerarArvore(listaNos)
+
+    tabelaAux = gerarTabela(noRaiz)
+    for item in tabelaAux:
+        chave = list(item.keys())[0]
+        tabela[chave] = item[chave]
+
+    tamanho = len(texto)
+    for chave in list(frequencia.keys()):
+        qtd += frequencia[chave] * len(tabela[chave])
+
+
+
+
+    print("Posicao do cursor:", cursor)
+    print("Carcter:",ord(texto[cursor]))
+    binarioCompleto = transformarTextoBin(caminho, cursor,qtd,tamanho,texto)
     print(binarioCompleto)
-    return [frequencia,tabela,binarioCompleto,extensao]
+    return [noRaiz,binarioCompleto,extensao]
 
 '''
 # Regenera o arquivo apartir do codigo binario do conteudo e do noRaiz do padrao
@@ -113,26 +142,13 @@ def recriarTabela(tabela):
 def descompactar():
     caminho = input("Digite o nome do arquivo: ")
     dados = recuperarDados(caminho)
-    tabelaFrequencia = dados[0]
-    tabelaRegenarada = dados[1]
-
-    novaTabela = open("tabela.txt","w")
-    novaTabela.write(json.dumps(tabelaRegenarada,indent=4))
-    novaTabela .close()
-    print("Frequencia:")
-    print(tabelaFrequencia)
-    lista = Criar_Lista(tabelaFrequencia)
-    listaOrdenada = OrdenarDicionario_SemFuncao(lista)
-    listaNos = gerarNos(listaOrdenada)
-
-    noRaiz = gerarArvore(listaNos)
-    print(noRaiz)
-    binarioCompleto = dados[2]
-    extensao = dados[3]
+    noRaiz = dados[0]
+    binarioCompleto = dados[1]
+    extensao = dados[2]
     caminhoNovo = caminho.split(".")[0]
     arquivoRegenerado = open(caminhoNovo + "." + extensao, "wb")
     listaFinal  = regenerar(binarioCompleto,noRaiz)
     for item in listaFinal:
-        arquivoRegenerado.write(bytes(chr(item),encoding="utf-8"))
+        arquivoRegenerado.write(bytes(item,encoding="utf-8"))
 
     arquivoRegenerado.close()

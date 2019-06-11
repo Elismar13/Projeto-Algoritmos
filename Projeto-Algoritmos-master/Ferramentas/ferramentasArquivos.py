@@ -19,10 +19,13 @@ def lerArquivo(arquivo):
     tamanho = os.path.getsize(arquivo.name)
     contador = 1
     for linha in arquivo:
-        aux = linha
-        for n in aux:
+
+
+
+        for n in linha:
             lista.append(n)
         contador += 1
+
     return lista
 
 
@@ -31,19 +34,29 @@ def lerArquivo(arquivo):
 # Parametros(caminho:string, posicao:int)
 # Return(binarioCompleto:string)
 '''
-def transformarTextoBin(caminho,posicao):
+def transformarTextoBin(caminho,posicao,quantidadeBits,tamanho,texto):
     binarioCompleto = ""
 
     arq = open(caminho,"rb")
-    tamanho = os.path.getsize(caminho)
+
     for i in range(posicao,tamanho):
-        arq.seek(i)
-        caracter = arq.read(1)
-        cod = str(converterDecimalBinarioMin(ord(caracter.decode())))
+
+        caracter = texto[i]
+
+        cod = ""
+        if(quantidadeBits >= 7):
+            cod = str(converterDecimalBinarioMin(ord(caracter)))
+
+        else:
+            cod = str(int(converterDecimalBinarioMin(ord(caracter),quantidadeBits - 2)))
+
         aux = len(cod) - 7
         if aux >= 1:
             cod = ajustaString(cod,aux)
+
+        print(ord(caracter),cod,sep=" - ")
         binarioCompleto += cod
+        quantidadeBits -= len(cod)
 
     arq.close()
     return binarioCompleto
