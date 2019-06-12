@@ -35,7 +35,7 @@ def substituirCaracterBin(palavra,tabela):
 '''
 def compactar():
     caminho = input("Digite o nome do arquivo: ")
-    arquivo = open(caminho, "rb" )
+    arquivo = open(caminho, "rb")
     print(arquivo)
     texto = lerArquivo(arquivo)
     dados = Contar_Caracteres(texto)

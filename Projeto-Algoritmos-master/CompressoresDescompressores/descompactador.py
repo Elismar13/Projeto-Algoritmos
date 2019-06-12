@@ -14,7 +14,7 @@ from model.no import *
 '''
 def recuperarDados(caminho):
     tabela = {}
-    arquivo = open(caminho,"r", encoding="utf-8")
+    arquivo = open(caminho,"rb")
     cont = 0
     cursor = 0
     texto = lerArquivo(arquivo)

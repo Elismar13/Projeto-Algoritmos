@@ -20,8 +20,7 @@ def lerArquivo(arquivo):
     contador = 1
     for linha in arquivo:
         print(linha)
-        for n in linha:
-            print(n)
+        for n in linha.decode():
             lista.append(n)
         contador += 1
 

@@ -99,16 +99,16 @@ def ProgramaPrincipal():
 
     lb = Label(janela, text="Selecione a opção desejada:")
     lb["background"] = "white"
-    lb.place(x=60, y = 25)
+    lb.place(x=70, y = 25)
 
     Compactar = Button(janela, width = 20, text = "Compactar", command=JaneladeCompactacao)
-    Compactar.place(x=60, y=60)
+    Compactar.place(x=70, y=60)
 
     Descompatar = Button(janela, width=20, text="Descompactar", command = JaneladeDescompactacao)
-    Descompatar.place(x=60,y=110)
+    Descompatar.place(x=70,y=110)
 
     Sair = Button(janela, width=20, text="Sair",command = exit)
-    Sair.place(x=60,y=160)
+    Sair.place(x=70,y=160)
 
     Mensagem = Label(janela, text="#DiganaoaoWinRAR", bg="white", fg = "red", font = ("Arial",14))
     Mensagem.place(x = 60, y = 260)
