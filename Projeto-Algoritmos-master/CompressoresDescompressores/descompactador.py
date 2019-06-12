@@ -29,14 +29,17 @@ def recuperarDados(caminho):
         extensao += c
         cursor += 1
 
+
     cursor += 1
 
     n = ord(texto[cursor])
-
+    print("..",n)
     cursor += 1
 
 
     while(cont < n ):
+        print(cont)
+        print(n)
         arquivo.seek(cursor)
         caracter = texto[cursor]
         while(caracter in tabela):

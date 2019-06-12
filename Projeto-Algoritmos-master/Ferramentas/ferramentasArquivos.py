@@ -19,7 +19,8 @@ def lerArquivo(arquivo):
     tamanho = os.path.getsize(arquivo.name)
     contador = 1
     for linha in arquivo:
-        for n in linha.decode():
+        print(linha)
+        for n in linha:
             print(n)
             lista.append(n)
         contador += 1
