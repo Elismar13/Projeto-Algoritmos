@@ -19,10 +19,8 @@ def lerArquivo(arquivo):
     tamanho = os.path.getsize(arquivo.name)
     contador = 1
     for linha in arquivo:
-
-
-
-        for n in linha:
+        for n in linha.decode():
+            print(n)
             lista.append(n)
         contador += 1
 
@@ -54,7 +52,6 @@ def transformarTextoBin(caminho,posicao,quantidadeBits,tamanho,texto):
         if aux >= 1:
             cod = ajustaString(cod,aux)
 
-        print(ord(caracter),cod,sep=" - ")
         binarioCompleto += cod
         quantidadeBits -= len(cod)
 

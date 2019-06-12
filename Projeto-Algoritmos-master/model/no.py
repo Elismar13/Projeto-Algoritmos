@@ -32,7 +32,23 @@ def juntarNo(no1,no2):
             "esquerda": no1
         }
 
+
     return novoNO
+
+'''
+# Soma o ord de cada caracter
+# Parametros(string: string)
+# Return(valor:int)
+'''
+def somarOrd(string):
+    valor = 0
+    for c in string:
+        valor += ord(c)
+
+    return valor
+
+
+
 
 '''
 #Ordena a lista em um formato crescente
@@ -112,7 +128,6 @@ def gerarArvore(listaNos):
             listaNos.append(novoNo)     #adiciona o novo no na lista de nos
             listaNos = ordenarNo(listaNos)  #Reordena a lista de nos
 
-    print("-",listaNos)
     return listaNos[0]  #Retorna o no raiz
 
 
@@ -123,7 +138,6 @@ def gerarArvore(listaNos):
 '''
 def gerarNos(lista):
     listaNos = []
-
     for item in lista:
         listaNos.append(inicializarNo(item))
 

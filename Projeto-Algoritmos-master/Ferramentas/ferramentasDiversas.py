@@ -25,7 +25,6 @@ def Contar_Caracteres(texto):
         listFrequencia.append({item:frequencia[item]})
 
     frequencia = ordenarFrequencia(listFrequencia)
-    print("Frequencia\n:",frequencia)
     return frequencia
 
 '''
@@ -34,7 +33,7 @@ def Contar_Caracteres(texto):
 # Return(frequenciaOrdenada:list)
 '''
 def ordenarFrequencia(lista):
-    print(lista)
+    print("ESTOU ORDENANDO",lista)
     for i in range(len(lista)):
         aux = lista[i]
         for j in range(i,-1,-1):

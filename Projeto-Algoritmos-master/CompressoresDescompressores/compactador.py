@@ -34,11 +34,10 @@ def substituirCaracterBin(palavra,tabela):
 # Return()
 '''
 def compactar():
-    caminho = input(":Digite o nome do arquivo: ")
+    caminho = input("Digite o nome do arquivo: ")
     arquivo = open(caminho, "rb")
-
+    print(arquivo)
     texto = lerArquivo(arquivo)
-    print(texto)
     dados = Contar_Caracteres(texto)
     listaOrdenada = OrdenarDicionario_SemFuncao(dados)
     listaNos = gerarNos(listaOrdenada)
@@ -46,6 +45,11 @@ def compactar():
     tabela = gerarTabela(noRaiz,gerar=True)
     bits = substituirCaracterBin(texto,tabela)
     listaBytes = substituirBits(bits)
+    print("Texto:", texto)
+    print("Lista Ordenada Compactador: ", listaOrdenada)
+
+    print("No raiz", noRaiz)
+
     criarNovoArquivoComprimido(caminho,listaBytes,tabela,dados)
 
 
@@ -63,7 +67,6 @@ def criarNovoArquivoComprimido(caminho,listsBytes,tabela,frequencia):
     padronizar(novoArquivo,tabela,extensao,frequencia)
 
     for byte in listsBytes:
-        print("B-",byte)
         caracter = bytes(converterByte(byte),encoding="utf-8")
         novoArquivo.write(caracter)
     novoArquivo.close()
@@ -81,11 +84,9 @@ def padronizar(arq,lista,extensao,frequencia):
     arq.write(bytes(extensao,encoding="utf-8"))
     arq.write(bytes(" ",encoding="utf-8"))
     arq.write(bytes(chr(qtd),encoding="utf-8"))
-    print(frequencia)
     for item in lista:
-        print("I",item)
         caracter = list(item.keys())[0]
-        arq.write(bytes(chr(caracter),encoding="utf-8"))
+        arq.write(bytes(caracter,encoding="utf-8"))
         arq.write(bytes(chr(binarios.converterBinarioDecimal(item[caracter])), encoding="utf-8"))
         arq.write(bytes(chr(buscarFrequencia(caracter,frequencia)),encoding="utf-8"))
 

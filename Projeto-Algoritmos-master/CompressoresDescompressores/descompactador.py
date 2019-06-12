@@ -14,7 +14,7 @@ from model.no import *
 '''
 def recuperarDados(caminho):
     tabela = {}
-    arquivo = open(caminho,"rb")
+    arquivo = open(caminho,"r", encoding="utf-8")
     cont = 0
     cursor = 0
     texto = lerArquivo(arquivo)
@@ -23,24 +23,20 @@ def recuperarDados(caminho):
     frequencia = {}
 
     for c in texto:
-        # print("--",c)
         if(c == " "):
             break
 
-        extensao += chr(c)
+        extensao += c
         cursor += 1
 
     cursor += 1
 
-    # print(texto)
     n = ord(texto[cursor])
 
     cursor += 1
 
-    print("Quantidade de caracters:", n)
 
-    while(cont < n):
-
+    while(cont < n ):
         arquivo.seek(cursor)
         caracter = texto[cursor]
         while(caracter in tabela):
@@ -65,18 +61,14 @@ def recuperarDados(caminho):
 
     #Determinando numero de bits necessarios a produzir
     qtd = 0
-
-
-
     listFrequencia = []
     for item in frequencia:
-
         listFrequencia.append({item:frequencia[item]})
 
     frequenciaAux = ordenarFrequencia(listFrequencia)
-
     listaOrdenada = OrdenarDicionario_SemFuncao(frequenciaAux)
     listaNos = gerarNos(listaOrdenada)
+    print("Lista ordenada decompactar: ", listaOrdenada)
     noRaiz = gerarArvore(listaNos)
 
     tabelaAux = gerarTabela(noRaiz)
@@ -88,11 +80,7 @@ def recuperarDados(caminho):
     for chave in list(frequencia.keys()):
         qtd += frequencia[chave] * len(tabela[chave])
 
-
-
-
-    print("Posicao do cursor:", cursor)
-    print("Carcter:",ord(texto[cursor]))
+    print(texto[cursor])
     binarioCompleto = transformarTextoBin(caminho, cursor,qtd,tamanho,texto)
     print(binarioCompleto)
     return [noRaiz,binarioCompleto,extensao]
@@ -106,6 +94,7 @@ def regenerar(codigoCompleto,noRaiz):
     lista = []
     no = noRaiz
     for bit in codigoCompleto:
+
         if(bit == "1"):
             no = no["direita"]
             if(no["esquerda"] == None and no["direita"] == None):
@@ -143,6 +132,7 @@ def descompactar():
     caminho = input("Digite o nome do arquivo: ")
     dados = recuperarDados(caminho)
     noRaiz = dados[0]
+    print("Raiz-", noRaiz)
     binarioCompleto = dados[1]
     extensao = dados[2]
     caminhoNovo = caminho.split(".")[0]

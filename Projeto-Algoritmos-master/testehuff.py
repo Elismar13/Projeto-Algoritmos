@@ -1,4 +1,5 @@
 import os
+import sys
 no = {
     "quantidade" : 0,
     "caracter" : "",
@@ -20,7 +21,7 @@ ArmezanrCodificação
 #
 
 #
-# arq = open("a.ale","rb")
+arq = open("imgJogador.ale","wb")
 # b = ord("é")
 # a = chr(b)
 # c = bytes(a,encoding="utf-8")
@@ -30,7 +31,9 @@ ArmezanrCodificação
 # arq.close()
 from Ferramentas.ferramentasArquivos import *
 
-# texto = lerArquivo(arq)
 # print("texto", texto)
 
-print(int.from_bytes(b'\x03\011', byteorder=sys.byteorder) ) # => 17
+# print(chr(int.from_bytes(b'\xc3\xa9\n', byteorder=sys.byteorder) ))# => 17
+print(ord("é"))
+arq.write(b'\xc3\xa9\n')
+arq.close()
