@@ -11,12 +11,6 @@ from CompressoresDescompressores.descompactador import descompactar
 
 
 
-#from tkinter import Tk
-#from tkinter.filedialog import askopenfilename
-
-#Tk().withdraw() # Isto torna oculto a janela principal
-#filename = askopenfilename() # Isto te permite selecionar um arquivo
-#print(filename) # printa o arquivo selecionado
 """
 def SelecaodeArquivo():
     teladeselecao = Tk()
@@ -25,25 +19,93 @@ def SelecaodeArquivo():
     print(teladeselecao.filename)
 
 """
+
+
+#================================JANELAS REFERENTE A COMPACTACAO ====================================
+#Esta é a janela de compactacao
+def JaneladeCompactacao():
+    janela = Toplevel()
+    janela.title("ALE- Tela de Compactacao")
+
+
+    selecione = Label(janela, text="Selecione o diretório do arquivo: ")
+    selecione.place(x=25,y=100)
+
+    SelecionarDiretorio = Button(janela, width = 5,  text = "...",cursor="hand2", command=SelecaodeArquivo_Compactar)  #botao selecao diretorio
+    SelecionarDiretorio.place(x=250, y=95)
+
+
+    voltar = Button(janela, width=10, text="Voltar", cursor="hand2", command = janela.destroy)
+    voltar.place(x = 125, y=175)
+
+    janela.geometry("350x300+150+150")
+    janela.mainloop()                                           #Laço de exebição infinito
+    janela.destroy()                                            #Fecho a janela de compactacao
+    return
+
+
 #janela de selecao de arquivo
 def SelecaodeArquivo_Compactar():
-    teladeselecao = Tk()
+    diretorio_arquivo = ""
 
-    teladeselecao.filename = askopenfilename(initialdir="/", title="Selecione o arquivo",
-                                                   filetypes=(("txt files", "*.txt"), ("all files", "*.*")))
-    diretorio_arquivo = teladeselecao.filename
-    if(diretorio_arquivo[-4:] == ".txt"):
-        compactar()
-    else:
-        print("Erro. tente novamente")
+    try:
+        filename = askopenfilename(initialdir="/", title="Selecione o arquivo",
+                                                       filetypes=(("Arquivos de Texto", "*.txt"),("Arquivos de Imagem", "*.jpg *.png"), ("Todos Arquivos", "*.*")))
+        diretorio_arquivo = filename
+    except:
+        erroCompactar()
+
+    if len(diretorio_arquivo) > 0:
+        if(diretorio_arquivo[-4:] == ".txt"):
+            compactar()
+        else:
+            erroCompactar()
+
+#Mensagem de erro
+def erroCompactar():
+    erro = Tk()
+    erro.title("ERRO")
+    erro.geometry("300x100+250+250")
+    mensagem = Label(erro, text="Arquivo inválido ou não suportado.\n Tente novamente.", fg="red",
+                     font=("Arial", 12))
+    mensagem.place(x=25, y=10)
+    voltar = Button(erro, width=5, text="Ok", cursor="hand2", command=erro.destroy)
+    voltar.place(x=120, y=60)
+    erro.mainloop()
+
+    return
+
+#==================================================================================================
+
+
+
+#===============================JANELAS REFERENTE A DESCOMPACTACAO ================================
+#Esta é a janela de compactacao
+def JaneladeDescompactacao():
+    janela = Tk()
+    janela.title("ALE- Tela de Descompactacao")
+
+    selecione = Label(janela, text="Selecione o diretório do arquivo (.ale): ")
+    selecione.place(x=20,y=100)
+
+    SelecionarDiretorio = Button(janela, width = 2,  text = "...",cursor="hand2",command=SelecaodeArquivo_Descompactar)  #botao selecao diretorio
+    SelecionarDiretorio.place(x=280, y=95)
+
+
+    voltar = Button(janela, width=6, text="Voltar", command = janela.destroy)
+    voltar.place(x = 125, y=175)
+
+    janela.geometry("350x300+150+150")
+    janela.mainloop()                                           #Laço de exebição infinito
+    janela.destroy()                                            #Fecho a janela de compactacao
     return
 
 
 def SelecaodeArquivo_Descompactar():
-    teladeselecao_descompactar = Tk()
-    teladeselecao_descompactar.filename = askopenfilename(initialdir="/", title="Selecione o arquivo (.ale)",
-                                                   filetypes=(("txt files", "*.txt"), ("all files", ".")))
-    diretorio_arquivo = teladeselecao_descompactar.filename
+
+    filename = askopenfilename(initialdir="/", title="Selecione o arquivo (.ale)",
+                                                   filetypes=(("Arquivos .ale", "*.ale*")("Todos Arquivos", "*.*")))
+    diretorio_arquivo = filename
 
     if(diretorio_arquivo[-4:] == ".ale"):
         descompactar()
@@ -51,72 +113,42 @@ def SelecaodeArquivo_Descompactar():
     return
 
 
-#Esta é a janela de compactacao
-def JaneladeCompactacao():
-    janela = Tk()
-    janela.title("ALE- Tela de Compactacao")
-
-    selecione = Label(janela, text="Selecione o diretório do arquivo: ")
-    selecione.place(x=25,y=100)
-
-    SelecionarDiretorio = Button(janela, width = 5,  text = "...", command=SelecaodeArquivo_Compactar)  #botao selecao diretorio
-    SelecionarDiretorio.place(x=250, y=95)
+#==================================================================================================
 
 
-    voltar = Button(janela, width=10, text="Voltar", command = janela.destroy)
-    voltar.place(x = 125, y=175)
 
-    janela.geometry("350x300+150+150")
-    janela.mainloop()                                           #Laço de exebição infinito
-    janela.destroy()                                            #Fecho a janela de compactacao
-    return
-
-
-#Esta é a janela de compactacao
-def JaneladeDescompactacao():
-    janela = Tk()
-    janela.title("ALE- Tela de Descompactacao")
-
-    selecione = Label(janela, text="Selecione o diretório do arquivo (.ale): ")
-    selecione.place(x=25,y=100)
-
-    SelecionarDiretorio = Button(janela, width = 5,  text = "...", command=SelecaodeArquivo_Descompactar)  #botao selecao diretorio
-    SelecionarDiretorio.place(x=250, y=95)
-
-
-    voltar = Button(janela, width=10, text="Voltar", command = janela.destroy)
-    voltar.place(x = 125, y=175)
-
-    janela.geometry("350x300+150+150")
-    janela.mainloop()                                           #Laço de exebição infinito
-    janela.destroy()                                            #Fecho a janela de compactacao
-    return
-
+#============================JANELAS REFERENTE AO PROGRAMA PRINCIPAL ==============================
 
 def ProgramaPrincipal():
-    janela = Tk()                                               #Janela principal com uma nova instancia de TK
-    janela.title("ALE - Tela Principal (beta)")
+    principal = Tk()                                               #Janela principal com uma nova instancia de TK
+    principal.title("ALE - Tela Principal (beta)")
+    icone_compactar = PhotoImage(file = "compactar.png")
 
-    lb = Label(janela, text="Selecione a opção desejada:")
+
+    lb = Label(principal, text="Selecione a opção desejada:", font="Arial 14")
     lb["background"] = "white"
-    lb.place(x=70, y = 25)
+    lb.place(x=40, y = 25)
 
-    Compactar = Button(janela, width = 20, text = "Compactar", command=JaneladeCompactacao)
-    Compactar.place(x=70, y=60)
+    Compactar = Button(principal, width = 20, text = "Compactar", cursor="hand2", command=JaneladeCompactacao)
+    Compactar.place(x=60, y=80)
+    #Compactar_figura = Label(principal, image = icone_compactar, width=10)
+    #Compactar_figura.place(x = 30, y = 80)
 
-    Descompatar = Button(janela, width=20, text="Descompactar", command = JaneladeDescompactacao)
-    Descompatar.place(x=70,y=110)
 
-    Sair = Button(janela, width=20, text="Sair",command = exit)
-    Sair.place(x=70,y=160)
+    Descompatar = Button(principal, width=20, text="Descompactar" ,cursor="hand2", command = JaneladeDescompactacao)
+    Descompatar.place(x=60,y=130)
 
-    Mensagem = Label(janela, text="#DiganaoaoWinRAR", bg="white", fg = "red", font = ("Arial",14))
-    Mensagem.place(x = 60, y = 260)
+    Sair = Button(principal, width=20, text="Sair do Programa", cursor="hand2", command = exit)
+    Sair.place(x=60,y=180)
 
-    janela["background"] = "white"          #Cor do fundo
-    janela.geometry("300x300+100+100")      #larguraxaltura+distanciaEsquerda+Distancia top
-    janela.mainloop()                       #Laço de exebição infinito
-    return janela.destroy
+    Mensagem = Label(principal, text="Desenvolvido por Elismar Silva e Lucas Dantas \nAlgoritmos e Lógica de Programação\nProfessora: Ianna Sodré", bg="white", fg = "red",font = ("Arial",9,"bold italic"))
+    Mensagem.place(x = 12, y = 250)
+
+    principal["background"] = "white"          #Cor do fundo
+    principal.geometry("300x300+100+100")      #larguraxaltura+distanciaEsquerda+Distancia top
+    principal.resizable(0,0)
+    principal.mainloop()                       #Laço de exebição infinito
+    return
 
 ProgramaPrincipal()
 
