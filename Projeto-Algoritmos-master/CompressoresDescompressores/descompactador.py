@@ -162,8 +162,8 @@ def recriarTabela(tabela):
 # Parametros()
 # Return()
 '''
-def descompactar():
-    caminho = input("Digite o nome do arquivo: ")
+def descompactar(caminhoArquivo):
+    caminho = caminhoArquivo
     print("Iniciando a Descompactacao...")
     dados = recuperarDados(caminho)
     tamanho = os.path.getsize(caminho)
