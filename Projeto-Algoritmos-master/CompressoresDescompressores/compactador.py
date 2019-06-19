@@ -33,8 +33,8 @@ def substituirCaracterBin(palavra,tabela):
 # Parametros()
 # Return()
 '''
-def compactar():
-    caminho = input("Digite o nome do arquivo: ")
+def compactar(caminhoArquivo):
+    caminho = caminhoArquivo
     arquivo = open(caminho, "rb")
     tamanho = os.path.getsize(caminho)
     print("Lendo Arquivo...")
