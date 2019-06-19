@@ -36,42 +36,50 @@ def substituirCaracterBin(palavra,tabela):
 def compactar():
     caminho = input("Digite o nome do arquivo: ")
     arquivo = open(caminho, "rb")
-    print(arquivo)
+    tamanho = os.path.getsize(caminho)
+    print("Lendo Arquivo...")
     texto = lerArquivo(arquivo)
+    print("Verificando Frequencia...")
     dados = Contar_Caracteres(texto)
-    listaOrdenada = OrdenarDicionario_SemFuncao(dados)
-    listaNos = gerarNos(listaOrdenada)
-    noRaiz = gerarArvore(listaNos)
+    noRaiz = gerarArvore(dados)
+    print("Gerando Nova Tabela de Codigos...")
     tabela = gerarTabela(noRaiz,gerar=True)
+    print("Substituindo bits")
     bits = substituirCaracterBin(texto,tabela)
     listaBytes = substituirBits(bits)
-    print("Texto:", texto)
-    print("Lista Ordenada Compactador: ", listaOrdenada)
-
-    print("No raiz", noRaiz)
-
-    criarNovoArquivoComprimido(caminho,listaBytes,tabela,dados)
+    print("Gerando novo Arquivo")
+    novoTamanho = criarNovoArquivoComprimido(caminho,listaBytes,tabela,dados,tamanho)
+    print("Compressao Concluida")
+    print("Tamanho Original -", tamanho)
+    print("Novo Tamanho -", novoTamanho)
+    print("Percentual Comprimido - %0.2f" %(100 - ((novoTamanho * 100) / tamanho)), "%", sep="")
+    print("=============================================")
 
 
 
 '''
 # Gera um novo arquivo compactado com os dados informados
 # Parametros(caminho:string, listaBytes:list(bytes))
-# Return()
+# Return(tamanho do arquivo criado)
 '''
-def criarNovoArquivoComprimido(caminho,listsBytes,tabela,frequencia):
+def criarNovoArquivoComprimido(caminho,listsBytes,tabela,frequencia,tamanho):
     nomeDividido = caminho.split(".")
     nomeSemExtensao = nomeDividido[0]
     extensao = nomeDividido[1]
     novoArquivo = open(nomeSemExtensao + ".ale","wb")
     padronizar(novoArquivo,tabela,extensao,frequencia)
-
+    quantidadeBytes = len(listsBytes)
+    cont = 1
     for byte in listsBytes:
+        percentual = (cont * 100) / quantidadeBytes # Calcula o percentual
+        exibirPercentual(percentual) # Exibe o percentual
         caracter = bytes(converterByte(byte),encoding="utf-8")
         novoArquivo.write(caracter)
+        cont += 1
+
     novoArquivo.close()
-
-
+    novoTamanho = os.path.getsize(nomeSemExtensao + ".ale")
+    return novoTamanho
 
 
 #====================================== Padrao ==================================================
@@ -91,6 +99,11 @@ def padronizar(arq,lista,extensao,frequencia):
         arq.write(bytes(chr(buscarFrequencia(caracter,frequencia)),encoding="utf-8"))
 
 
+'''
+# Busca a Frequencia de um caracter na lista de frequencia 
+# Parametros(caracter:string, frequencia:list(dict))
+# Return(item[chave:int)
+'''
 def buscarFrequencia(caracter,frequencia):
     for item in frequencia:
         chave = list(item.keys())[0]

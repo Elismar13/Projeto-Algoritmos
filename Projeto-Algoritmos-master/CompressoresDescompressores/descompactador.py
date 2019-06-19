@@ -6,6 +6,92 @@ from Ferramentas.ferramentasArquivos import *
 from Ferramentas.ferramentasDiversas import *
 from Ferramentas.binarios import *
 from model.no import *
+#========================Fim imports================================
+'''
+# Recuperar a extensao do arquivo 
+# Parametros(dados:list)
+# Return(extensao:string, posicao:int)
+'''
+def recuperarExtensao(dados):
+    cursor = 0
+    extensao = ""
+    for c in dados:
+        if(c == " "):
+            break
+    
+        extensao += c
+        cursor += 1
+    
+    return [extensao,cursor]
+
+
+'''
+# Verifica o prefixo do codigo a ser adicionado, ajustando quando necessario
+# Parametros(codigoBin:string, tabela:dict)
+# Return(codigoBin:string)
+'''
+def verficarPrefixo(codigoBin,tabela):    
+    #Verificacao de prefixo em codigos
+    for codigo in list(tabela.values()):
+        if(codigoBin == codigo):
+            codigoBin = "0" + codigoBin
+            continue
+
+        if(codigoBin == codigo[:len(codigo) - 1]):
+            codigoBin = "0" + codigoBin
+            continue
+
+    return codigoBin
+
+'''
+# Recria a frequencia dos caracter
+# Parametros(texto:list, posicao:int)
+# Return([frequencia:dict,cursor:int,tabela:dict)
+'''
+def recuperarCaracterFrequencia(texto,posicao):
+    contadorCaracter = 0
+    frequencia = {}
+    tabela = {}
+    cursor = posicao
+    n = ord(texto[cursor])
+    cursor += 1
+    while(contadorCaracter < n ):
+        caracter = texto[cursor]
+        while(caracter in tabela):
+            cursor += 1
+            caracter = texto[cursor]
+        codigoBin = str(int(converterDecimalBinario(ord(texto[cursor + 1]))))
+        codigoBin = verficarPrefixo(codigoBin,tabela)
+        frequencia[caracter] = ord(texto[cursor + 2])
+        tabela[caracter] = codigoBin
+        contadorCaracter += 1
+        cursor += 3
+    return [frequencia,cursor,tabela]
+
+'''
+# Recria a Arvore a partir da frequencia
+# Parametros(frequencia:dict)
+# Return(noRaiz:dict)
+'''
+def regenerarArvore(frequencia):
+    listFrequencia = []
+    for item in frequencia:
+        listFrequencia.append({item:frequencia[item]})
+    frequenciaAux = ordenarFrequencia(listFrequencia)
+    noRaiz = gerarArvore(frequenciaAux)
+    return noRaiz
+
+
+'''
+# Calcula a quantidade de bits que precisara
+# Parametros(frequencia:dict, tabela:dict)
+# Return(qtd:int)
+'''
+def calcularQuantidadeBits(frequencia, tabela):
+    qtd = 0
+    for chave in list(frequencia.keys()):
+        qtd += frequencia[chave] * len(tabela[chave])
+    return qtd
 
 '''
 # Recupera o padra(tabela) de codigos gerados pela compressao e o codigo binario do codigo do texto
@@ -13,79 +99,25 @@ from model.no import *
 # Return([tabela:dict,binarioCompleto:
 '''
 def recuperarDados(caminho):
-    tabela = {}
     arquivo = open(caminho,"rb")
-    cont = 0
-    cursor = 0
     texto = lerArquivo(arquivo)
-
-    extensao = ""
-    frequencia = {}
-
-    for c in texto:
-        if(c == " "):
-            break
-
-        extensao += c
-        cursor += 1
-
-
-    cursor += 1
-
-    n = ord(texto[cursor])
-    print("..",n)
-    cursor += 1
-
-
-    while(cont < n ):
-        print(cont)
-        print(n)
-        arquivo.seek(cursor)
-        caracter = texto[cursor]
-        while(caracter in tabela):
-            cursor += 1
-            caracter = texto[cursor]
-
-        codigoBin = str(int(converterDecimalBinario(ord(texto[cursor + 1]))))
-        frequencia[caracter] = ord(texto[cursor + 2])
-        #Verificacao de prefixo em codigos
-        for codigo in list(tabela.values()):
-            if(codigoBin == codigo):
-                codigoBin = "0" + codigoBin
-                continue
-
-            if(codigoBin == codigo[:len(codigo) - 1]):
-                codigoBin = "0" + codigoBin
-                continue
-
-        tabela[caracter] = codigoBin
-        cont += 1
-        cursor += 3
-
-    #Determinando numero de bits necessarios a produzir
-    qtd = 0
-    listFrequencia = []
-    for item in frequencia:
-        listFrequencia.append({item:frequencia[item]})
-
-    frequenciaAux = ordenarFrequencia(listFrequencia)
-    listaOrdenada = OrdenarDicionario_SemFuncao(frequenciaAux)
-    listaNos = gerarNos(listaOrdenada)
-    print("Lista ordenada decompactar: ", listaOrdenada)
-    noRaiz = gerarArvore(listaNos)
-
-    tabelaAux = gerarTabela(noRaiz)
-    for item in tabelaAux:
-        chave = list(item.keys())[0]
-        tabela[chave] = item[chave]
-
+    print("Recuperando extensao do arquivo...")
+    primeirosDados = recuperarExtensao(texto)
+    extensao = primeirosDados[0]
+    cursor = primeirosDados[1] + 1 # Para nao ficar no espaco
+    # Parte 2
+    print("Recuperando a Frequencia de Cada Caracter...")
+    segundosDados = recuperarCaracterFrequencia(texto,cursor)
+    frequencia = segundosDados[0]
+    cursor = segundosDados[1]
+    tabela = segundosDados[2]
+    print("Regenerando a Arvore...")
+    noRaiz = regenerarArvore(frequencia)
+    print("Calculando Quantidade de Bits")
+    quantidadeBits = calcularQuantidadeBits(frequencia,tabela)
     tamanho = len(texto)
-    for chave in list(frequencia.keys()):
-        qtd += frequencia[chave] * len(tabela[chave])
-
-    print(texto[cursor])
-    binarioCompleto = transformarTextoBin(caminho, cursor,qtd,tamanho,texto)
-    print(binarioCompleto)
+    print("Resgatando Conteudo em Binario...")
+    binarioCompleto = transformarTextoBin(cursor,quantidadeBits,tamanho,texto)
     return [noRaiz,binarioCompleto,extensao]
 
 '''
@@ -122,7 +154,6 @@ def recriarTabela(tabela):
     novaTabela = {}
     for i in range(0,len(chaves)):
         novaTabela[chaves[i]] = (len(tabela[chaves[i]]) ** 2) + converterBinarioDecimal(tabela[chaves[i]])
-        print("---",chaves[i],"<><><>",len(tabela[chaves[i]]) + converterBinarioDecimal(tabela[chaves[i]]))
     return novaTabela
 
 
@@ -133,15 +164,38 @@ def recriarTabela(tabela):
 '''
 def descompactar():
     caminho = input("Digite o nome do arquivo: ")
+    print("Iniciando a Descompactacao...")
     dados = recuperarDados(caminho)
+    tamanho = os.path.getsize(caminho)
     noRaiz = dados[0]
-    print("Raiz-", noRaiz)
     binarioCompleto = dados[1]
     extensao = dados[2]
     caminhoNovo = caminho.split(".")[0]
-    arquivoRegenerado = open(caminhoNovo + "." + extensao, "wb")
-    listaFinal  = regenerar(binarioCompleto,noRaiz)
-    for item in listaFinal:
+    CaminhoDescompactado = caminhoNovo + "." + extensao
+    print("Regenerando Novo Arquivo...")
+    listaBytes  = regenerar(binarioCompleto,noRaiz)
+    novoTamanho = recriarArquivoDescompactado(caminhoNovo,listaBytes)
+    print("Descompressao Concluida")
+    print("Tamanho Compactado -", tamanho)
+    print("Tamanho Descompactado -", novoTamanho)
+    print("Percentual Descomprimido - %0.2f" %(100 - ((novoTamanho * 100) / tamanho)), "%", sep="")
+    print("=============================================")
+
+
+'''
+# Gera um novo arquivo descompactado com os dados informados
+# Parametros(caminho:string, listaBytes:list(bytes))
+# Return(tamanho do arquivo criado)
+'''
+def recriarArquivoDescompactado(caminho, listaBytes):
+    arquivoRegenerado = open(caminho, "wb")
+    tamanho = len(listaBytes)
+    contadorBytes = 1
+    for item in listaBytes:
+        percentual = (contadorBytes * 100) / tamanho
+        exibirPercentual(percentual)
         arquivoRegenerado.write(bytes(item,encoding="utf-8"))
+        contadorBytes += 1
 
     arquivoRegenerado.close()
+    return os.path.getsize(caminho)

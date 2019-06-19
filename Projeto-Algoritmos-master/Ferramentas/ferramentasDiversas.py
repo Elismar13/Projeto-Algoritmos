@@ -2,7 +2,18 @@
 Ferramentas uteis para o funcionamento do codigo
 '''
 
-import sys
+'''
+# Exibe o valor percentual e uma barra mostrando o percentual
+# Parametros(percentual:float)
+# Return()
+'''
+def exibirPercentual(percentual):
+
+    print("%0.2f" %percentual,"%", sep="")
+    qtdBarras = int(percentual // 10)
+    qtdPontos = 10 - qtdBarras
+    print("| " * qtdBarras, ". " * qtdPontos)
+
 
 
 '''
@@ -33,7 +44,6 @@ def Contar_Caracteres(texto):
 # Return(frequenciaOrdenada:list)
 '''
 def ordenarFrequencia(lista):
-    print("ESTOU ORDENANDO",lista)
     for i in range(len(lista)):
         aux = lista[i]
         for j in range(i,-1,-1):

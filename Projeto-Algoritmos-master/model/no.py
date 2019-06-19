@@ -3,7 +3,8 @@ Arquivo contendo as funções que envolvem os nós da arvore
 '''
 #==============================Imports====================
 import json
-
+from Ferramentas.ferramentasDiversas import *
+#=========================================================
 '''
 #unta dois nos
 #Parametros(no1:dict, no2:dict)
@@ -119,7 +120,11 @@ def gerarTabela(no,cod = "",gerar = False):
 # Parametros(listaNos:list(dict)
 # return(No raiz)
 '''
-def gerarArvore(listaNos):
+def gerarArvore(frequencia):
+    print("Ordenando a Frequencia...")
+    listaOrdenada = OrdenarDicionario_SemFuncao(frequencia)
+    print("Gerando Nos e Arvore...")
+    listaNos = gerarNos(listaOrdenada)
     for n in range(0,len(listaNos)):    #Percorre a lista de nos
         if(len(listaNos) > 1):     #Verifica se ha mais de um item na lista
             novoNo = juntarNo(listaNos[0],listaNos[1])   #Junta os nos que possuem caracter com menor frequencia
@@ -142,3 +147,4 @@ def gerarNos(lista):
         listaNos.append(inicializarNo(item))
 
     return listaNos
+

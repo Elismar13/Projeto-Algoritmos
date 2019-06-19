@@ -37,3 +37,30 @@ from Ferramentas.ferramentasArquivos import *
 print(ord("é"))
 arq.write(b'\xc3\xa9\n')
 arq.close()
+
+print("Tamanho compac:", os.path.getsize("a.ale"))
+print("tamanho Origin:", os.path.getsize("a.txt"))
+print("tamanho Gerado:", os.path.getsize("aGer.txt"))
+
+arq1 = open("a.txt", "rb")
+arq2 = open("aGer.txt", "rb")
+
+linhas1 = []
+for i in arq1:
+    linhas1 += [i]
+
+igual = True
+cont = 0
+for n in arq2:
+    if(n != linhas1[cont]):
+        print("N", n)
+        print("Lista", linhas1[cont])
+        print("COnt", cont)
+        print("Nao e igual")
+        igual = False
+        break
+
+    cont += 1
+
+if(igual):
+    print("Igual")
