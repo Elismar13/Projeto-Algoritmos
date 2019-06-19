@@ -28,15 +28,15 @@ def JaneladeCompactacao():
     janela.title("ALE- Tela de Compactacao")
 
 
-    selecione = Label(janela, text="Selecione o diretório do arquivo: ")
-    selecione.place(x=25,y=100)
+    selecione = Label(janela, text="Selecione o diretório do arquivo: ", font=("Arial", 11))
+    selecione.place(x=30,y=100)
 
     SelecionarDiretorio = Button(janela, width = 5,  text = "...",cursor="hand2", command=SelecaodeArquivo_Compactar)  #botao selecao diretorio
-    SelecionarDiretorio.place(x=250, y=95)
+    SelecionarDiretorio.place(x=260, y=100)
 
 
     voltar = Button(janela, width=10, text="Voltar", cursor="hand2", command = janela.destroy)
-    voltar.place(x = 125, y=175)
+    voltar.place(x = 135, y=175)
 
     janela.geometry("350x300+150+150")
     janela.mainloop()                                           #Laço de exebição infinito
@@ -57,12 +57,12 @@ def SelecaodeArquivo_Compactar():
 
     if len(diretorio_arquivo) > 0:
         if(diretorio_arquivo[-4:] == ".txt"):
-            compactar()
+            compactar(diretorio_arquivo)
         else:
-            erroCompactar()
+            erroCompactar(diretorio_arquivo)
 
 #Mensagem de erro
-def erroCompactar():
+def erroCompactar(diretorio=""):
     erro = Tk()
     erro.title("ERRO")
     erro.geometry("300x100+250+250")
@@ -85,10 +85,10 @@ def JaneladeDescompactacao():
     janela = Tk()
     janela.title("ALE- Tela de Descompactacao")
 
-    selecione = Label(janela, text="Selecione o diretório do arquivo (.ale): ")
+    selecione = Label(janela, text="Selecione o diretório do arquivo (.ale): ", font=("Arial",11))
     selecione.place(x=20,y=100)
 
-    SelecionarDiretorio = Button(janela, width = 2,  text = "...",cursor="hand2",command=SelecaodeArquivo_Descompactar)  #botao selecao diretorio
+    SelecionarDiretorio = Button(janela, width = 5,  text = "...",cursor="hand2",command=SelecaodeArquivo_Descompactar)  #botao selecao diretorio
     SelecionarDiretorio.place(x=280, y=95)
 
 
@@ -102,16 +102,22 @@ def JaneladeDescompactacao():
 
 
 def SelecaodeArquivo_Descompactar():
-
-    filename = askopenfilename(initialdir="/", title="Selecione o arquivo (.ale)",
-                                                   filetypes=(("Arquivos .ale", "*.ale*")("Todos Arquivos", "*.*")))
-    diretorio_arquivo = filename
+    try:
+        filename = askopenfilename(initialdir="/", title="Selecione o arquivo",
+                                                       filetypes=(("Arquivos de Texto", "*.txt"),("Arquivos de Imagem", "*.jpg *.png"), ("Todos Arquivos", "*.*")))
+        diretorio_arquivo = filename
+    except:
+        erroCompactar()
 
     if(diretorio_arquivo[-4:] == ".ale"):
         descompactar()
-
+    else:
+        erroDescompactar()
     return
 
+
+def erroDescompactar():
+    return
 
 #==================================================================================================
 
@@ -122,24 +128,24 @@ def SelecaodeArquivo_Descompactar():
 def ProgramaPrincipal():
     principal = Tk()                                               #Janela principal com uma nova instancia de TK
     principal.title("ALE - Tela Principal (beta)")
-    icone_compactar = PhotoImage(file = "compactar.png")
+    #icone_compactar = PhotoImage(file = "compactar.png")
 
 
     lb = Label(principal, text="Selecione a opção desejada:", font="Arial 14")
     lb["background"] = "white"
-    lb.place(x=40, y = 25)
+    lb.place(x=30, y = 25)
 
     Compactar = Button(principal, width = 20, text = "Compactar", cursor="hand2", command=JaneladeCompactacao)
-    Compactar.place(x=60, y=80)
+    Compactar.place(x=70, y=80)
     #Compactar_figura = Label(principal, image = icone_compactar, width=10)
     #Compactar_figura.place(x = 30, y = 80)
 
 
     Descompatar = Button(principal, width=20, text="Descompactar" ,cursor="hand2", command = JaneladeDescompactacao)
-    Descompatar.place(x=60,y=130)
+    Descompatar.place(x=70,y=130)
 
     Sair = Button(principal, width=20, text="Sair do Programa", cursor="hand2", command = exit)
-    Sair.place(x=60,y=180)
+    Sair.place(x=70,y=180)
 
     Mensagem = Label(principal, text="Desenvolvido por Elismar Silva e Lucas Dantas \nAlgoritmos e Lógica de Programação\nProfessora: Ianna Sodré", bg="white", fg = "red",font = ("Arial",9,"bold italic"))
     Mensagem.place(x = 12, y = 250)
