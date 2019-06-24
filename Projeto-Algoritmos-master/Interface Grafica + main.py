@@ -56,7 +56,7 @@ def SelecaodeArquivo_Compactar():
         erroCompactar()
 
     if len(diretorio_arquivo) > 0:
-        if(diretorio_arquivo[-4:] == ".txt"):
+        if(diretorio_arquivo[-4:] == ".txt") or (diretorio_arquivo[-4:] == ".png") or (diretorio_arquivo[-4:] == ".jpg"):
             compactar(diretorio_arquivo)
         else:
             erroCompactar(diretorio_arquivo)
