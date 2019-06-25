@@ -18,7 +18,6 @@ def main():
 
         elif(opcao == 2):
             descompactar()
-
         else:
             print("Opcao Invalids Tente novamente")
 

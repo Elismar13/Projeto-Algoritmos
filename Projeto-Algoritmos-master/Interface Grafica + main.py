@@ -110,7 +110,7 @@ def SelecaodeArquivo_Descompactar():
         erroCompactar()
 
     if(diretorio_arquivo[-4:] == ".ale"):
-        descompactar()
+        descompactar(diretorio_arquivo)
     else:
         erroDescompactar()
     return

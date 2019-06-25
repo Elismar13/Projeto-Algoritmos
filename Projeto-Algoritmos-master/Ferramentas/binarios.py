@@ -41,9 +41,8 @@ def converterDecimalBinarioMin(decimal,n = 5):
 
 # Substitui os bits em um conjunto de 7 bits
 def substituirBits(bits):
-    codificado = ""
-    for bit in bits:
-        codificado += bit
+    codificado = bits
+
 
     listaBytes = []
     for n in range(0,len(codificado),7):

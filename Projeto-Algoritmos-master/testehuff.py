@@ -32,7 +32,7 @@ arq = open("imgJogador.ale","wb")
 from Ferramentas.ferramentasArquivos import *
 
 # print("texto", texto)
-
+'''
 # print(chr(int.from_bytes(b'\xc3\xa9\n', byteorder=sys.byteorder) ))# => 17
 print(ord("é"))
 arq.write(b'\xc3\xa9\n')
@@ -62,5 +62,15 @@ for n in arq2:
 
     cont += 1
 
+
+bits ['0110', '1111', '1110', '1101', '1100', '1011', '1010', '1001', '1000', '00111', '00110', '00101', '00100', '00011', '00010', '00001', '00000', '01011', '01010', '01001', '01000', '0111']
+
+0110 1110 11110110111001011101001001100000111001100010100100000110001000000100000001011010100100101000010000011
+
+
 if(igual):
     print("Igual")
+'''
+a ="bHAm3}\]&	!%"
+for c in a:
+    print(bin(ord(c)))

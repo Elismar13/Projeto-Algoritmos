@@ -25,13 +25,30 @@ def juntarNo(no1,no2):
             "direita": no1,
             "esquerda": no2
         }
-    else:
+    elif(quantidade2 < quantidade1):
         novoNO = {
             "quantidade":quantidade1 + quantidade2,
             "caracter": caracter1 + caracter2,
             "direita": no2,
             "esquerda": no1
         }
+
+    else:
+        if(ord(caracter1[0]) < ord(caracter2[0])):
+            novoNO = {
+            "quantidade":quantidade1 + quantidade2,
+            "caracter": caracter1 + caracter2,
+            "direita": no1,
+            "esquerda": no2
+            }
+
+        else:
+            novoNO = {
+            "quantidade":quantidade1 + quantidade2,
+            "caracter": caracter1 + caracter2,
+            "direita": no2,
+            "esquerda": no1
+         }
 
 
     return novoNO
@@ -94,7 +111,7 @@ def inicializarNo(item):
 '''
 #Gera a tabela de codigos a apartir de uma arvore
 #Parametros(no:Dicionario, cod:string)
-#Return
+#Return (tabela:LIST[DICT])
 '''
 def gerarTabela(no,cod = "",gerar = False):
     tabela = []
@@ -107,7 +124,7 @@ def gerarTabela(no,cod = "",gerar = False):
         tabela.append({no["caracter"]: cod})
 
     if(gerar == True):
-        novaTabela = open("tabela.txt","w")
+        novaTabela = open("tabelades.txt","w")
         novaTabela.write(json.dumps(tabela,indent=4))
         novaTabela .close()
 
@@ -118,7 +135,7 @@ def gerarTabela(no,cod = "",gerar = False):
 '''
 # Gera a arvore de Huffman a apartir da lista de Nos ordenada pela frequencia dos seus caracters
 # Parametros(listaNos:list(dict)
-# return(No raiz)
+# return(No raiz:dict)
 '''
 def gerarArvore(frequencia):
     print("Ordenando a Frequencia...")

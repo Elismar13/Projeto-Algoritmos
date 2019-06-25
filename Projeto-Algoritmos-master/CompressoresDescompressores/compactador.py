@@ -8,7 +8,6 @@ from Ferramentas.ferramentasArquivos import *
 from Ferramentas.ferramentasDiversas import *
 from Ferramentas.binarios import *
 from model.no import *
-
 #=============================Fim Import========================================
 
 #=============================Funcoes===========================================
@@ -16,7 +15,7 @@ from model.no import *
 #Parametros(palavra:bytes, tabela:diconario[])
 #return lista de bits
 def substituirCaracterBin(palavra,tabela):
-    bits = []
+    bits = ""
     dicionario = {} #Inicializando Dicionario vazio
     for item in tabela:     #Gerando Dicionario a partir da tabela de codigos
         chave = list(item.keys())[0]
@@ -24,13 +23,13 @@ def substituirCaracterBin(palavra,tabela):
         dicionario[chave] = valor
 
     for i in range(0,len(palavra)):     #Convertendo caracter em binarios(String)
-        bits.append(dicionario[palavra[i]])
+        bits += dicionario[palavra[i]]
 
     return bits
 
 '''
 # Funcao responsavel por efetuar a compactacao dos arquivos chamando as funcoes necessarias
-# Parametros()
+# Parametros(CaminhoAquivo: string)
 # Return()
 '''
 def compactar(caminhoArquivo):
@@ -53,7 +52,13 @@ def compactar(caminhoArquivo):
     print("Tamanho Original -", tamanho)
     print("Novo Tamanho -", novoTamanho)
     print("Percentual Comprimido - %0.2f" %(100 - ((novoTamanho * 100) / tamanho)), "%", sep="")
-    print("=============================================")
+    print("bits", bits)
+    print("=============================================  ")
+    print("0011100110001010010000011000100000100000011101101011001111111011011100101110101001100001001010000101001011")
+    print("0011100110001010010000011000100000100000011101101011001111111011011100101110101001100001001010000101001010000001")
+    print("00111001100010100100000110001000001000000111011010110011111110110111001011101010011000010011000011001011")
+    print("0011100011000100100100000110000100000100000010110110101100110111110101011100010111010100110001001100001100101000001")
+
 
 
 
