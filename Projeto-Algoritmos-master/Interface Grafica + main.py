@@ -110,13 +110,22 @@ def SelecaodeArquivo_Descompactar():
         erroCompactar()
 
     if(diretorio_arquivo[-4:] == ".ale"):
-        descompactar()
+        descompactar(diretorio_arquivo)
     else:
         erroDescompactar()
     return
 
 
 def erroDescompactar():
+    erro = Tk()
+    erro.title("ERRO")
+    erro.geometry("300x120+250+250")
+    mensagem = Label(erro, text="Arquivo inválido ou não suportado.\nO arquivo deve ser (.ale).\nTente novamente.", fg="red",
+                     font=("Arial", 12))
+    mensagem.place(x=25, y=10)
+    voltar = Button(erro, width=5, text="Ok", cursor="hand2", command=erro.destroy)
+    voltar.place(x=120, y=90)
+    erro.mainloop()
     return
 
 #==================================================================================================
