@@ -32,7 +32,6 @@ def Contar_Caracteres(texto):
 
     listFrequencia = []
     for item in frequencia:
-
         listFrequencia.append({item:frequencia[item]})
 
     frequencia = ordenarFrequencia(listFrequencia)
@@ -53,7 +52,6 @@ def ordenarFrequencia(lista):
             if(list(aux.keys())[0] > list(lista[j -1].keys())[0]):
                 lista[j] = aux
                 break
-
             lista[j] = lista[j - 1]
     return lista
 
