@@ -60,13 +60,10 @@ def recuperarCaracterFrequencia(texto,posicao):
         while(caracter in tabela):
             cursor += 1
             caracter = texto[cursor]
-        codigoBin = str(int(converterDecimalBinario(ord(texto[cursor + 1]))))
-        codigoBin = verficarPrefixo(codigoBin,tabela)
-        frequencia[caracter] = ord(texto[cursor + 2])
-        tabela[caracter] = codigoBin
+        frequencia[caracter] = ord(texto[cursor + 1])
         contadorCaracter += 1
-        cursor += 3
-    return [frequencia,cursor,tabela]
+        cursor += 2
+    return [frequencia,cursor]
 
 '''
 # Recria a Arvore a partir da frequencia
@@ -89,8 +86,12 @@ def regenerarArvore(frequencia):
 '''
 def calcularQuantidadeBits(frequencia, tabela):
     qtd = 0
+    print(frequencia)
+    print(tabela)
     for chave in list(frequencia.keys()):
-        qtd += frequencia[chave] * len(tabela[chave])
+        for item in tabela:
+            if(list(item.keys())[0] == chave):
+                qtd += frequencia[chave] * len(item[chave])
     return qtd
 
 '''
@@ -110,11 +111,13 @@ def recuperarDados(caminho):
     segundosDados = recuperarCaracterFrequencia(texto,cursor)
     frequencia = segundosDados[0]
     cursor = segundosDados[1]
-    tabela = segundosDados[2]
+
     print("Regenerando a Arvore...")
     noRaiz = regenerarArvore(frequencia)
+    tabela = gerarTabela(noRaiz)
     print("Calculando Quantidade de Bits")
     quantidadeBits = calcularQuantidadeBits(frequencia,tabela)
+
     tamanho = len(texto)
     print("Resgatando Conteudo em Binario...")
     binarioCompleto = transformarTextoBin(cursor,quantidadeBits,tamanho,texto)
@@ -170,15 +173,17 @@ def descompactar(caminhoArquivo):
     noRaiz = dados[0]
     binarioCompleto = dados[1]
     extensao = dados[2]
-    caminhoNovo = caminho.split(".")[0]
-    CaminhoDescompactado = caminhoNovo + "." + extensao
+    caminhoNovo = pegarCaminhoExtensao(caminho)[0]
+    caminhoDescompactado = caminhoNovo + "." + extensao
     print("Regenerando Novo Arquivo...")
     listaBytes  = regenerar(binarioCompleto,noRaiz)
-    novoTamanho = recriarArquivoDescompactado(caminhoNovo,listaBytes)
+    novoTamanho = recriarArquivoDescompactado(caminhoDescompactado,listaBytes)
     print("Descompressao Concluida")
     print("Tamanho Compactado -", tamanho)
     print("Tamanho Descompactado -", novoTamanho)
     print("Percentual Descomprimido - %0.2f" %(100 - ((novoTamanho * 100) / tamanho)), "%", sep="")
+    print(caminhoDescompactado)
+    print(binarioCompleto)
     print("=============================================")
 
 
