@@ -93,6 +93,7 @@ def criarNovoArquivoComprimido(caminho,listsBytes,tabela,frequencia,tamanho):
 # - caracter Representado os bits
 #Configura os primeiros bits para informacoes do arquivos compactado
 def padronizar(arq,lista,extensao,frequencia):
+    frequencia = reorganizarFrequencia(frequencia)
     qtd = len(lista)
     arq.write(bytes(extensao,encoding="utf-8"))
     arq.write(bytes(" ",encoding="utf-8"))
@@ -102,7 +103,29 @@ def padronizar(arq,lista,extensao,frequencia):
         arq.write(bytes(caracter,encoding="utf-8"))
         arq.write(bytes(chr(buscarFrequencia(caracter,frequencia)),encoding="utf-8"))
 
+'''
+Reorganiza a frequencia diminueindo os valores da frequencia sem alterar a ordem
+Parametros(Frequencia:list[dict])
+Return(frequencia:list[dict])
+'''
+def reorganizarFrequencia(frequencia):
+    aux = 0
+    cont = 0
+    anterior = None
+    for item in frequencia:
+        chave = list(item.keys())[0]
+        if(cont == 0 or item[chave] > anterior):
+            aux += 1
+            anterior = item[chave]
+            item[chave] = aux
+            cont += 1
+            continue
 
+        item[chave] = aux
+
+    return frequencia
+
+        
 '''
 # Busca a Frequencia de um caracter na lista de frequencia 
 # Parametros(caracter:string, frequencia:list(dict))
